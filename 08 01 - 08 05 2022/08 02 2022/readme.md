@@ -13,3 +13,9 @@
     入门
     https://book.douban.com/subject/24703731/ 
     
+
+
+Idea:
+每一个 feature  的重要程度是不一样的， bank loan, 与 balance income 的关系最为紧密，与 学历 住址的联系 没有那么重要。 
+每一个feature  的weight 是不一样的
+如何在 cost loss function 中体现这种不同
