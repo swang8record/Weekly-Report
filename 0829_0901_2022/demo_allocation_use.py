@@ -2,29 +2,22 @@ import pandas as pd
 import numpy as np 
 import cvxpy as cp 
 
-
-
+# cost score dataset 
 flip_df = pd.read_csv('denied_flipset.csv')
-
 flip_df['ref_index'] = flip_df['Unnamed: 0']
 flip_df = flip_df.drop(['Unnamed: 0'], axis=1)
 
 #flip_df
 
 
-#data processing
+# German data pre-processing 
 raw_df = pd.read_csv('german_raw.csv' , index_col = 0)
 processed_df = pd.DataFrame(raw_df)
-
-#processed_df['GoodCustomer'] = processed_df.index
-
 category = pd.unique(processed_df['PurposeOfLoan']).tolist()
 
 dic = {}
-
 for i, name in enumerate(category):
     dic[name] = i   
-
 
 processed_df['Gender'] = processed_df['Gender'].apply(lambda x: 1 if x== "Male" else -1)
 processed_df['PurposeOfLoan'] = processed_df['PurposeOfLoan'].apply(lambda x: dic[x])
@@ -32,6 +25,7 @@ processed_df = processed_df.reset_index(drop=True)
 
 
 #--------------------------------------------------
+# allocate_df used for CVXPY opt 
 allocate_df = pd.DataFrame()
 allocate_df['Gender'] = processed_df['Gender']
 
@@ -45,8 +39,10 @@ for idx, val in zip(flip_df['ref_index'].tolist(), flip_df['total_cost']):
 allocate_df['total_cost'] = pd.Series(cost_dic)
 allocate_df['GoodCustomer'] = 1
 
-# CVXPY Solution 
 
+# CVXPY Solution 
+# Budget from 0 to 100
+# B >= 60,  we achive max-value 363.  
 B = {}
 for b in range(100):
     x = cp.Variable(len(allocate_df), boolean= True)
@@ -93,5 +89,3 @@ print(B)
  92: 394.0, 93: 394.0, 94: 394.0, 95: 394.0, 96: 394.0,
  97: 394.0, 98: 394.0, 99: 394.0}
 """
-
-
