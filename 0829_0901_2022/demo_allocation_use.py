@@ -44,12 +44,13 @@ allocate_df['GoodCustomer'] = 1
 # Budget from 0 to 100, X always has the opt solution 
 # B >= 60,  we achive max-value 363.  
 B = {}
+
+ones = np.ones(len(allocate_df))
+
 for b in range(100):
     x = cp.Variable(len(allocate_df), boolean= True)
     #cons1 = allocate_df['total_cost'].to_numpy() @ x 
-    #cons2 = allocate_df['Gender'].to_numpy() @ x  
-    ones = np.ones(len(allocate_df))
-    
+    #cons2 = allocate_df['Gender'].to_numpy() @ x 
     prob = cp.Problem(cp.Maximize(ones@x),
                      [allocate_df['total_cost'].to_numpy() @ x <= b, 
                      allocate_df['Gender'].to_numpy() @ x  == 0.0])
