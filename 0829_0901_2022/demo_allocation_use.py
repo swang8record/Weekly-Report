@@ -41,7 +41,7 @@ allocate_df['GoodCustomer'] = 1
 
 
 # CVXPY Solution 
-# Budget from 0 to 100
+# Budget from 0 to 100, X always has the opt solution 
 # B >= 60,  we achive max-value 363.  
 B = {}
 for b in range(100):
